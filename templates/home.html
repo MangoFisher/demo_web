@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}首页{% endblock %}
+
+{% block extra_style %}
+.home-container {
+    text-align: center;
+    color: white;
+}
+.home-container h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.home-container p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+.info-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border-radius: 16px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+.info-card h2 {
+    margin-bottom: 1rem;
+}
+.info-card ul {
+    text-align: left;
+    list-style: none;
+}
+.info-card li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.info-card li:last-child {
+    border-bottom: none;
+}
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <h1>欢迎来到 Django Web</h1>
+    <p>一个简单的登录演示系统</p>
+
+    <div class="info-card">
+        <h2>系统信息</h2>
+        <ul>
+            <li><strong>框架:</strong> Django {{ django_version }}</li>
+            <li><strong>用户:</strong> {{ user.username }}</li>
+            <li><strong>登录时间:</strong> {% now "Y-m-d H:i" %}</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}
