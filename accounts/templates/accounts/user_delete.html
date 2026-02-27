@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}删除用户 - {{ user_obj.username }}{% endblock %}
+
+{% block extra_style %}
+.delete-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+.delete-container h1 {
+    color: #ef4444;
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+}
+.warning-icon {
+    width: 64px;
+    height: 64px;
+    background: #fef2f2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+}
+.delete-container p {
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+.user-info {
+    background: #f9fafb;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+}
+.user-info p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+}
+.user-info strong {
+    color: #1f2937;
+}
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.btn {
+    flex: 1;
+    padding: 0.875rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+}
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+.warning-text {
+    color: #dc2626;
+    font-weight: 500;
+}
+{% endblock %}
+
+{% block content %}
+<div class="delete-container">
+    <div class="warning-icon">⚠️</div>
+    <h1>确认删除用户</h1>
+
+    <p>您确定要删除以下用户吗？</p>
+
+    <div class="user-info">
+        <p><strong>用户名：</strong>{{ user_obj.username }}</p>
+        <p><strong>邮箱：</strong>{{ user_obj.email|default:"未设置" }}</p>
+        <p><strong>注册时间：</strong>{{ user_obj.date_joined|date:"Y-m-d" }}</p>
+    </div>
+
+    <p class="warning-text">此操作不可撤销！</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="action-buttons">
+            <a href="{% url 'user_list' %}" class="btn btn-secondary">取消</a>
+            <button type="submit" class="btn btn-danger">确认删除</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

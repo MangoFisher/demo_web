@@ -62,8 +62,12 @@
 </head>
 <body>
     <nav>
+        <a href="{% url 'home' %}">首页</a>
         {% if user.is_authenticated %}
             <span style="color: white;">你好, {{ user.username }}!</span>
+            {% if user.is_staff %}
+            <a href="{% url 'user_list' %}">用户管理</a>
+            {% endif %}
             <a href="{% url 'logout' %}">退出</a>
         {% else %}
             <a href="{% url 'login' %}">登录</a>

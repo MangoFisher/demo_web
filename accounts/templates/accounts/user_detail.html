@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+{% block title %}用户详情 - {{ user_obj.username }}{% endblock %}
+
+{% block extra_style %}
+.user-detail-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    width: 100%;
+    max-width: 600px;
+}
+.user-detail-container h1 {
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    text-align: center;
+}
+.user-info {
+    margin-bottom: 2rem;
+}
+.info-row {
+    display: flex;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+.info-row:last-child {
+    border-bottom: none;
+}
+.info-label {
+    flex: 0 0 120px;
+    font-weight: 600;
+    color: #374151;
+}
+.info-value {
+    flex: 1;
+    color: #1f2937;
+}
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+.badge-active {
+    background: #d1fae5;
+    color: #065f46;
+}
+.badge-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+.badge-admin {
+    background: #dbeafe;
+    color: #1e40af;
+}
+.badge-normal {
+    background: #f3f4f6;
+    color: #374151;
+}
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: none;
+}
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+{% endblock %}
+
+{% block content %}
+<div class="user-detail-container">
+    <h1>用户详情</h1>
+
+    <div class="user-info">
+        <div class="info-row">
+            <span class="info-label">用户名</span>
+            <span class="info-value">{{ user_obj.username }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">邮箱</span>
+            <span class="info-value">{{ user_obj.email|default:"未设置" }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">姓名</span>
+            <span class="info-value">
+                {% if user_obj.first_name or user_obj.last_name %}
+                {{ user_obj.last_name }}{{ user_obj.first_name }}
+                {% else %}
+                未设置
+                {% endif %}
+            </span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">状态</span>
+            <span class="info-value">
+                {% if user_obj.is_active %}
+                <span class="badge badge-active">活跃</span>
+                {% else %}
+                <span class="badge badge-inactive">禁用</span>
+                {% endif %}
+            </span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">权限</span>
+            <span class="info-value">
+                {% if user_obj.is_superuser %}
+                <span class="badge badge-admin">超级管理员</span>
+                {% elif user_obj.is_staff %}
+                <span class="badge badge-admin">管理员</span>
+                {% else %}
+                <span class="badge badge-normal">普通用户</span>
+                {% endif %}
+            </span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">注册时间</span>
+            <span class="info-value">{{ user_obj.date_joined|date:"Y-m-d H:i:s" }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">最后登录</span>
+            <span class="info-value">
+                {% if user_obj.last_login %}
+                {{ user_obj.last_login|date:"Y-m-d H:i:s" }}
+                {% else %}
+                从未登录
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="{% url 'user_list' %}" class="btn btn-secondary">返回列表</a>
+        <a href="{% url 'user_edit' user_obj.id %}" class="btn btn-primary">编辑</a>
+        {% if user_obj.id != request.user.id %}
+        <a href="{% url 'user_delete' user_obj.id %}" class="btn btn-danger">删除</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
